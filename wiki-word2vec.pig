@@ -9,7 +9,7 @@ word2vec = load '/projects/qrw/ruiqiang/wiki/GoogleNews-vectors-negative300.scor
 
 wikiwords = load '$input' ;
 
-wikiwords = foreach wikiwords generate (chararray)$0 as wiki:chararray, (chararray)$1 as uni:chararray, (float)$2 as tfidf:float ;
+wikiwords = foreach wikiwords generate (chararray)$0 as wiki:chararray, (chararray)$1 as uni:chararray, (float)1.0 as tfidf:float ; --(float)$2 as tfidf:float ;
 
 wordjoin = foreach (join wikiwords by uni, word2vec by word) generate wikiwords::wiki, wikiwords::tfidf, word2vec::feature ;
 
