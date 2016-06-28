@@ -1,8 +1,9 @@
 alias python='$HOME/tools/Python-3.4.4/bin/python3'
 
 #create docu freq for all wiki tokens, about 1.7M
-#nohup sh dopig.sh wiki-docfreq.pig  
-#hadoop fs -cat /projects/qrw/ruiqiang/wiki/docufreq/part* | gunzip | python ../git_mrrqzhang/bbwords/file-to-json.py True > wiki-test-df.json
+nohup sh dopig.sh ../git_mrrqzhang/wikidump/wiki-docfreq.pig "-p input=/projects/qrw/ruiqiang/wiki/toptfidfid3 -p output=/projects/qrw/ruiqiang/wiki/docufreq"
+
+hadoop fs -cat /projects/qrw/ruiqiang/wiki/docufreq/part* | gunzip | python ../git_mrrqzhang/bbwords/file-to-json.py True > wiki-test-df.json
 #../word2vec/feature-binary2asc GoogleNews-vectors-negative300.bin > ../wikidump/GoogleNews-vectors-negative300.score-normalized.txt
 
 

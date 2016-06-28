@@ -2,9 +2,19 @@
 DEFINE TFIDF `python tfidf.py` ship('/tmp/ruiqiang/git_mrrqzhang/wikidump/stopwords.marisa','/tmp/ruiqiang/git_mrrqzhang/wikidump/tfidf.py'); ;
 
 %default DocuFreqMin 50  -- minimal document frequency (misspell words)
-%default MaxTokenNumEachEntity 500
+%default MaxTokenNumPerEntity 500
 %default input 'a.1'
 %default out  'temp'
+
+
+
+DEFINE DisAmbugation(INPUT) RETURNS TABLE
+{
+    entity = 
+    $TABLE = A ;
+};
+
+
 
 data = load '$input' using PigStorage('\t','-noschema') ; ;
 
@@ -17,7 +27,7 @@ entitytable = join entitytable by word, wdf by word ;
 entitytable = foreach entitytable generate entitytable::entity as entity:chararray, entitytable::word as word:chararray, (double)entitytable::tf/wdf::df as tfidf:double, entitytable::tf as tf:double, wdf::df as df:double ;
 
 entitytable = foreach (group entitytable by entity) {
-		tmp = TOP($MaxTokenNumEachEntity,2,entitytable) ;		
+		tmp = TOP($MaxTokenNumPerEntity,2,entitytable) ;		
                 generate flatten(tmp) as (entity:chararray, word:chararray, tfidf:double, tf:double, df:double) ;  
 }
 
