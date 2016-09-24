@@ -24,7 +24,8 @@ for line in sys.stdin:
     creation_time = '1473724679'
     creator = 'wikomega'
     temp = remove_punct(fields[0]).lower()
-    suggestion = '|'.join( re.split(' ',temp))
+    temp =  re.split(' ',temp)[0:4]
+    suggestion = '|'.join([ ' '.join(temp[0:i]) for i in range(1,min(4,1+len(temp))) ]) 
     description = '.'.join(re.split('\.',fields[1])[0:2]) + '.'
     sys.stdout.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\n' % (eid, caption,alias,creation_time,creator,suggestion,description))
   except: pass
