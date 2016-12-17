@@ -13,16 +13,26 @@ def remove_punct(sent):
     sent = re.sub('^\s+','',sent)
     return sent
 
+def convert_apostrophe(word):
+    word = re.sub("\\\\'",'\'',word)
+    return word
+
+def convert_quote(word):
+    word = re.sub('\\\\"','\"', word)
+    return word
+
+def wiki_alias(word):
+    return remove_punct(word).lower()
 
 for line in sys.stdin:
   try:
     fields = line.strip('\r\t\n').split('\t')
     if len(fields)<2: continue
     if "(disambiguation)" in fields[0]: continue
-    eid = fields[0]
+    eid = convert_quote(convert_apostrophe(fields[0]))
     wiki_id = eid
     caption = re.sub('_',' ',eid)
-    alias = caption.lower()
+    alias = wiki_alias(wiki_id)
     creation_time = '1473724679'
     creator = 'wikomega'
     temp = remove_punct(fields[0]).lower()
@@ -31,8 +41,8 @@ for line in sys.stdin:
     description = '.'.join(re.split('\.',fields[1])[0:2]) + '.'
     description = re.sub("\\\\'\\\\'\\\\'",'',description)  # convert \'\'\' to ''
     description = re.sub("\\\\'\\\\'",'',description)       # convert \'\' to ''
-    description = re.sub("\\\\'",'\'',description)          # convert \' to '
-    description = re.sub('\\\\"','\"',description)          # convert \" to "
+    description = convert_apostrophe(description)          # convert \' to '
+    description = convert_quote(description)          # convert \" to "
     description = re.sub('\(.*?\)','',description)
     description = description.split('==')[0]
     sys.stdout.write('%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' % (eid, wiki_id,caption,alias,creation_time,creator,suggestion,description))

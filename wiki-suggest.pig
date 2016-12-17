@@ -20,7 +20,7 @@ suggcnt = foreach ( join sugg by alias, wikicnt by query ) generate
 	   wikicnt::cnt as cnt:long ;
 
 suggrp = foreach ( group suggcnt by suggest ) {
-           temp = TOP(30,2,suggcnt) ;
+           temp = TOP(20,2,suggcnt) ;
 	   generate flatten(temp) ;
 }
 
