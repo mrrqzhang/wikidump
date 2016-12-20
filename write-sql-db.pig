@@ -1,9 +1,10 @@
 
 -- eid, caption, alias, creation_time, creator, suggestion, description
 
-DEFINE DBFORMAT `python write-sql-db.py` ship('/tmp/ruiqiang/wikidump/write-sql-db.py','/homes/ruiqiang/MyPythonLib/mypythonlib.py'); ;
+DEFINE DBFORMAT `python write-sql-db.py` ship('/tmp/ruiqiang/wikidump/write-sql-db.py','utilfunc.py'); ;
 
 %default input /projects/qrw/ruiqiang/wiki/entity/
+%default suggest 
 
 data = load '$input' using PigStorage('\t','-noschema') ; ;
 
