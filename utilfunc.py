@@ -7,8 +7,11 @@ def epochutcnow():
     return int(unix_time_millis(datetime.utcnow())/1000)
 
 def unix_time_millis(dt):
+#    epoch = datetime(1970, 1, 1, 0, 0)  
     epoch = datetime.utcfromtimestamp(0)
-    return (dt - epoch).total_seconds()*1000 
+    delta = dt-epoch
+    return (delta.days*86400+delta.seconds+delta.microseconds/1e6)*1000
+#    return (dt - epoch).total_seconds()*1000  #total_seconds() not available for 2.6.6
 
 
 def utcnow():

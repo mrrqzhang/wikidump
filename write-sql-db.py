@@ -1,8 +1,9 @@
 import sys,re,string
+
+sys.path.append(".")
 from utilfunc import *
 from datetime import datetime
 
-sys.path.insert(0,'/'.join(__file__.split('/')[:-1]))
 
 
 
@@ -19,11 +20,11 @@ for line in sys.stdin:
     wiki_id = eid
     caption = re.sub('_',' ',eid)
     alias = wiki_alias(wiki_id)
-    creation_time = epochutcnow()   #utcnow() #'1473724679'
+    creation_time = str(epochutcnow())   #utcnow() #'1473724679'
     creator = 'wikomega'
     temp = remove_punct(fields[0]).lower()
     temp =  re.split(' ',temp)[0:4]
-    suggestion = ''    #  '|'.join([ ' '.join(temp[0:i]) for i in range(1,min(4,1+len(temp))) ]) 
+    suggestion =   '|'.join([ ' '.join(temp[0:i]) for i in range(1,min(4,1+len(temp))) ]) 
     description = '.'.join(re.split('\.',fields[1])[0:2]) + '.'
     description = re.sub("\\\\'\\\\'\\\\'",'',description)  # convert \'\'\' to ''
     description = re.sub("\\\\'\\\\'",'',description)       # convert \'\' to ''
