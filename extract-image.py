@@ -28,6 +28,10 @@ for line in sys.stdin:
     for template in wikicode.filter_templates():
 	if 'Infobox' in template.name:
     		 image = template.get('Image').value.strip('\\n\r\n\t ')
+		 if image[0:2]=="[[":     # for deep level: [[Image:The rain king x files.jpg|250px|The Rain King|alt=A man is attaches an artificial leg while people watch.]]
+			match = re.search(r'\[\[.*:(.*)', image.split('|')[0])
+         #               print match
+                        if match: image=match.group(1)
                  break ;
     sys.stdout.write('%s\t%s\t%s\n\n' % (fields[2].encode('utf-8'), image,content[0:1000].encode('utf-8')))
   except: pass
