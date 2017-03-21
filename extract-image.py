@@ -15,7 +15,6 @@ import re
 
 NChars=1000
 
-#for line in codecs.open(sys.argv[1],"r", "utf-8" ):
 for line in sys.stdin:
   try:
     fields = line.strip('\r\t\n').split('\t')
@@ -27,41 +26,19 @@ for line in sys.stdin:
     image='NA'
     for template in wikicode.filter_templates():
 	if 'Infobox' in template.name:
-    		 image = template.get('Image').value.strip('\\n\r\n\t ')
-		 if image[0:2]=="[[":     # for deep level: [[Image:The rain king x files.jpg|250px|The Rain King|alt=A man is attaches an artificial leg while people watch.]]
-			match = re.search(r'\[\[.*:(.*)', image.split('|')[0])
-         #               print match
-                        if match: image=match.group(1)
-                 break ;
+             for item in template.params:
+                name = item.name.lower().strip('\r\n\t ')
+                value = item.value.strip('\\n\r\n\t ')
+		
+		if name=='image' or name=='photo' or any( pic in value.lower() for pic in  ['.jpg','.png','.gif' ,'.tiff','.jpeg'] ) :
+			image = value
+#                 	print image
+		        if image[0:2]=="[[":     # for deep level: [[Image:The rain king x files.jpg|250px|The Rain King|alt=A man is attaches an artificial leg while people watch.]]
+   			    match = re.search(r'\[\[.*:(.*)', image.split('|')[0])
+			    if match: image=match.group(1)
+		            break
+                
+             break 
     sys.stdout.write('%s\t%s\t%s\n\n' % (fields[2].encode('utf-8'), image,content[0:1000].encode('utf-8')))
   except: pass
 
-
-
-
-#    for item in templates:
-#           print(item.encode('utf-8'))
-#    print wikicode.encode('utf-8'), "\n"
-#    print templates.encode('utf-8'),"\n"
-
-
-#	sec = wikicode.filter_text()
-#	print sec
-#        for item in sec:
-#	    sys.stdout.write('Name: %s\n' % (item.encode('utf-8')))
-#	    print item.params
-#	    sys.stdout.write('Param: %s\n' % (item.params.encode('utf-8')))
-#	for k in range(len(sec)):
-#		sys.stdout.write('%d\n%s\n' % (k,sec[k].encode('utf-8')))
-
-
-
-
-
-
-
-#	sys.stdout.write('%s\t%s\n' % (fields[2].encode('utf-8'),wikicode.encode('utf-8')))
-#	print(wikicode.encode('utf-8'))
-#	templates = wikicode.filter_templates()
-#	for item in templates:
-#	    print(item.encode('utf-8'))
